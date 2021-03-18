@@ -19,4 +19,7 @@
     <!-- If not zero, limits the internal screen recorder's framerate to the set value. -->
     <integer name="config_screenRecorderMaxFramerate">90</integer>
 
+    <!-- dimensions for the navigation bar handle -->
+    <dimen name="navigation_home_handle_width">140dp</dimen>
+
 </resources>
