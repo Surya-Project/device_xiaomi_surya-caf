@@ -8,6 +8,9 @@
 $(call inherit-product, device/xiaomi/surya/refreshrate.mk)
 USE_DYNAMIC_REFRESH_RATE := true
 
+# Inherit from the proprietary configuration
+$(call inherit-product, vendor/xiaomi/surya/surya-vendor.mk)
+
 # ANT+
 PRODUCT_PACKAGES += \
     com.dsi.ant@1.0.vendor
@@ -264,9 +267,6 @@ PRODUCT_SHIPPING_API_LEVEL := 29
 # Userspace fastboot
 PRODUCT_PACKAGES += \
     fastbootd
-
-# Vendor blobs
-$(call inherit-product, vendor/xiaomi/surya/surya-vendor.mk)
 
 # WiFi
 PRODUCT_COPY_FILES += \
