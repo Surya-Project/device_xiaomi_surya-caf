@@ -1,2 +1,11 @@
 # Dirac
 vendor_internal_prop(dirac_prop);
+<<<<<<< HEAD
+=======
+
+# IR
+vendor_internal_prop(lirc_prop);
+
+# Power Hal
+vendor_internal_prop(vendor_power_prop);
+>>>>>>> 45f3cce (surya: Import pixel power HAL from hardware/xiaomi twelve: https://github.com/PixelExperience/hardware_xiaomi)

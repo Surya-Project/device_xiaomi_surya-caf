@@ -110,9 +110,16 @@ on boot
     setprop vendor.usb.qdss.inst.name "qdss"
     setprop sys.usb.configfs 1
 
+<<<<<<< HEAD
 # access permissions for FPC service
     chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq
     chown system system /sys/bus/platform/devices/soc/soc:fpc1020/wakeup_enable
+=======
+on property:sys.boot_completed=1
+
+    # Enable ZRAM on boot_complete
+    swapon_all /vendor/etc/fstab.zram
+>>>>>>> 45f3cce (surya: Import pixel power HAL from hardware/xiaomi twelve: https://github.com/PixelExperience/hardware_xiaomi)
 
 #start camera server as daemon
 #service qcamerasvr /system/bin/mm-qcamera-daemon
@@ -143,10 +150,6 @@ on property:init.svc.vendor.per_mgr=running
 
 on property:sys.shutdown.requested=*
     stop vendor.per_proxy
-
-on charger
-    setprop sys.usb.controller a600000.dwc3
-    setprop sys.usb.configfs 1
 
 ## import cne init file
 #on post-fs

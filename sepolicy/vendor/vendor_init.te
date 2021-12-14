@@ -1,4 +1,17 @@
+<<<<<<< HEAD
+=======
+set_prop(vendor_init, vendor_fp_prop)
+set_prop(vendor_init, vendor_ims_prop)
+set_prop(vendor_init, vendor_cnd_prop)
+set_prop(vendor_init, vendor_camera_prop)
+set_prop(vendor_init, vendor_ssr_prop)
+set_prop(vendor_init, vendor_power_prop)
+
+get_prop(vendor_init, persist_debug_prop)
+
+>>>>>>> 45f3cce (surya: Import pixel power HAL from hardware/xiaomi twelve: https://github.com/PixelExperience/hardware_xiaomi)
 allow vendor_init proc_sched:file write;
+allow vendor_init proc_sched_energy_aware:file w_file_perms;
 
 # Dirac
 set_prop(vendor_init, dirac_prop)
