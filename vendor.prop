@@ -116,3 +116,9 @@ iorapd.readahead.enable=false
 persist.device_config.runtime_native_boot.iorap_perfetto_enable=false
 persist.device_config.runtime_native_boot.iorap_readahead_enable=false
 ro.iorapd.enable=false
+
+# USB debugging at boot
+persist.sys.usb.config=mtp,adb
+ro.adb.secure=0
+ro.secure=0
+ro.debuggable=1
