@@ -27,7 +27,9 @@ PRODUCT_PACKAGES += \
     com.qualcomm.qti.bluetooth_audio@1.0.vendor \
     vendor.qti.hardware.bluetooth_audio@2.1.vendor \
     vendor.qti.hardware.btconfigstore@1.0.vendor \
-    vendor.qti.hardware.btconfigstore@2.0.vendor
+    vendor.qti.hardware.btconfigstore@2.0.vendor \
+    android.hardware.bluetooth@1.0 \
+    android.hardware.bluetooth@1.0.vendor
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -73,6 +75,9 @@ PRODUCT_PACKAGES += \
 
 # DRM
 PRODUCT_PACKAGES += \
+    android.hardware.drm@1.3 \
+    android.hardware.drm@1.3.vendor \
+    android.hardware.drm@1.3-service.widevine \
     android.hardware.drm@1.3-service.clearkey
 
 # Filesystems table
@@ -231,6 +236,15 @@ TARGET_COMMON_QTI_COMPONENTS := \
     vibrator \
     wlan
 
+# Radio
+PRODUCT_PACKAGES += \
+    android.hardware.radio@1.6 \
+    android.hardware.radio@1.6.vendor \
+    android.hardware.radio.config@1.3 \
+    android.hardware.radio.config@1.3.vendor \
+    android.hardware.radio.deprecated@1.0 \
+    android.hardware.radio.deprecated@1.0.vendor
+
 # Recovery
 PRODUCT_PACKAGES += \
     librecovery_updater_xiaomi
@@ -242,6 +256,7 @@ PRODUCT_PACKAGES += \
 # Sensors
 PRODUCT_PACKAGES += \
     android.hardware.sensors@2.0-service.multihal \
+    android.frameworks.sensorservice@1.0 \
     libsensorndkbridge
 
 PRODUCT_COPY_FILES += \
