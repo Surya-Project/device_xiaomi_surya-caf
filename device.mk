@@ -57,9 +57,6 @@ PRODUCT_PACKAGES += \
     android.hardware.contexthub@1.0-impl.generic \
     android.hardware.contexthub@1.0-service
 
-# Dalvik
-$(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
-
 # Device Settings
 PRODUCT_PACKAGES += \
     XiaomiParts

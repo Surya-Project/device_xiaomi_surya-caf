@@ -30,11 +30,15 @@
  */
 
 #include <cstdlib>
+#include <fstream>
 #include <string.h>
+#include <unistd.h>
+#include <vector>
 
+#include <android-base/properties.h>
 #define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
 #include <sys/_system_properties.h>
-#include <android-base/properties.h>
+#include <sys/sysinfo.h>
 
 #include "property_service.h"
 #include "vendor_init.h"
@@ -42,58 +46,86 @@
 using android::base::GetProperty;
 using std::string;
 
-void property_override(char const prop[], char const value[])
-{
-    auto pi = (prop_info*) __system_property_find(prop);
+std::vector<std::string> ro_props_default_source_order = {
+    "",
+    "odm.",
+    "product.",
+    "system.",
+    "system_ext.",
+    "vendor.",
+};
 
-    if (pi != nullptr)
+void property_override(char const prop[], char const value[], bool add = true) {
+    prop_info *pi;
+
+    pi = (prop_info *)__system_property_find(prop);
+    if (pi)
         __system_property_update(pi, value, strlen(value));
-    else
+    else if (add)
         __system_property_add(prop, strlen(prop), value, strlen(value));
 }
 
-void set_ro_build_prop(const string &source, const string &prop,
-                       const string &value, bool product = false) {
-    string prop_name;
+void load_dalvik_properties() {
+    struct sysinfo sys;
 
-    if (product)
-        prop_name = "ro.product." + source + prop;
-    else
-        prop_name = "ro." + source + "build." + prop;
+    sysinfo(&sys);
+    if (sys.totalram >= 5ull * 1024 * 1024 * 1024){
+        // from - phone-xhdpi-6144-dalvik-heap.mk
+        property_override("dalvik.vm.heapstartsize", "16m");
+        property_override("dalvik.vm.heapgrowthlimit", "256m");
+        property_override("dalvik.vm.heapsize", "512m");
+        property_override("dalvik.vm.heaptargetutilization", "0.5");
+        property_override("dalvik.vm.heapmaxfree", "32m");
+    } else if (sys.totalram >= 7ull * 1024 * 1024 * 1024) {
+        // 8GB
+        property_override("dalvik.vm.heapstartsize", "24m");
+        property_override("dalvik.vm.heapgrowthlimit", "256m");
+        property_override("dalvik.vm.heapsize", "512m");
+        property_override("dalvik.vm.heaptargetutilization", "0.46");
+        property_override("dalvik.vm.heapmaxfree", "48m");
+    }
 
-    property_override(prop_name.c_str(), value.c_str());
+    property_override("dalvik.vm.heapminfree", "8m");
 }
 
-void set_device_props(const string brand, const string device,
-			const string model, const string name) {
-    // list of partitions to override props
-    string source_partitions[] = { "", "bootimage.", "odm.", "product.",
-                                   "system.", "system_ext.", "vendor." };
+void set_device_props(const std::string brand, const std::string device, const std::string model,
+        const std::string name, const std::string marketname) {
+    const auto set_ro_product_prop = [](const std::string &source,
+                                        const std::string &prop,
+                                        const std::string &value) {
+        auto prop_name = "ro.product." + source + prop;
+        property_override(prop_name.c_str(), value.c_str(), true);
+    };
 
-    for (const string &source : source_partitions) {
-        set_ro_build_prop(source, "brand", brand, true);
-        set_ro_build_prop(source, "device", device, true);
-        set_ro_build_prop(source, "product", device, false);
-        set_ro_build_prop(source, "model", model, true);
-        set_ro_build_prop(source, "name", name, true);
+    for (const auto &source : ro_props_default_source_order) {
+        set_ro_product_prop(source, "brand", brand);
+        set_ro_product_prop(source, "device", device);
+        set_ro_product_prop(source, "model", model);
+        set_ro_product_prop(source, "name", name);
+        set_ro_product_prop(source, "marketname", marketname);
     }
 }
 
-void vendor_load_properties()
-{
-    /*
-     * Detect device and configure properties
-     */
-    if (GetProperty("ro.boot.hwname", "") == "karna") { // POCO X3 (India)
-        set_device_props("POCO", "karna", "M2007J20CI", "karna_in");
-    } else { // POCO X3 NFC
-        string hwc = GetProperty("ro.boot.hwc", "");
-        if (hwc == "THAI" || hwc == "THAI_PA") // POCO X3 NFC Thailand
-            set_device_props("POCO", "surya", "M2007J20CT", "surya_global");
-        else // POCO X3 NFC Global
-            set_device_props("POCO", "surya", "M2007J20CG", "surya_global");
+void vendor_load_properties() {
+    string region = android::base::GetProperty("ro.boot.hwc", "");
+
+    if (region == "INDIA") {
+        set_device_props(
+            "POCO", "karna", "M2007J20CI", "aospa_karna", "POCO X3"); // POCO X3 (India)
+        property_override("ro.product.mod_device", "aospa_karna");
+    if (region == "THAI" || region == "THAI_PA")
+        set_device_props(
+            "POCO", "surya", "M2007J20CT", "aospa_surya", "POCO X3 NFC"); // POCO X3 NFC Thailand
+        property_override("ro.product.mod_device", "aospa_surya");
+    }  else {
+        set_device_props(
+            "POCO", "surya", "M2007J20CG", "aospa_surya", "POCO X3 NFC"); // POCO X3 NFC Global
+        property_override("ro.product.mod_device", "aospa_surya");
     }
 
-    // Set hardware revision
-    property_override("ro.boot.hardware.revision", GetProperty("ro.boot.hwversion", "").c_str());
+    load_dalvik_properties();
+
+//  SafetyNet workaround
+    property_override("ro.boot.verifiedbootstate", "green");
+    property_override("ro.oem_unlock_supported", "0");
 }
