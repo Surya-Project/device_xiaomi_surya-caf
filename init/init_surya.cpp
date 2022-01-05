@@ -113,7 +113,7 @@ void vendor_load_properties() {
         set_device_props(
             "POCO", "karna", "M2007J20CI", "aospa_karna", "POCO X3"); // POCO X3 (India)
         property_override("ro.product.mod_device", "aospa_karna");
-    if (region == "THAI" || region == "THAI_PA")
+    }  else  if (region == "THAI" || region == "THAI_PA") {
         set_device_props(
             "POCO", "surya", "M2007J20CT", "aospa_surya", "POCO X3 NFC"); // POCO X3 NFC Thailand
         property_override("ro.product.mod_device", "aospa_surya");
