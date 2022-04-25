@@ -178,6 +178,7 @@ PRODUCT_COPY_FILES += \
 
 # Overlays
 PRODUCT_PACKAGES += \
+    AOSPAJ20CFrameworks \
     J20CFrameworks \
     J20CNoCutoutOverlay \
     J20CSettings \
