@@ -632,6 +632,7 @@ vendor/etc/seccomp_policy/gnss@2.0-xtwifi-inet-agent.policy|9c0419bf0a0b4ef12952
 -vendor/etc/vintf/manifest/vendor.qti.gnss@4.0-service.xml|6514b13f55abc0acc28e004c35ff93fb972d61a9
 vendor/etc/xtra_root_cert.pem|f55a31ec4d9cf8ce2724acadecf00c779f8767db
 vendor/etc/xtwifi.conf|ac2189707c0016c31846ccec73e8857d7f566605
+vendor/lib/libgps.utils.so|adbb81210619fb0e374dee8aaa4f070adc2e3ba0
 vendor/lib64/hw/vendor.qti.gnss@4.0-impl.so|85d86cfcf3cf60dc69974ed71b17dc6dc8c40381
 vendor/lib64/libcapiv2svarnn.so|6786511acd1925926d09011ae3e22deb3162d142
 vendor/lib64/libcdfw.so|70ef0247c71d590b503471a03d4aaa76d99441e9
@@ -641,6 +642,7 @@ vendor/lib64/libgarden.so|8280148f80c15a992720e84222b22f641525a17e
 vendor/lib64/libgarden_haltests_e2e.so|d0924ec8e0d4a130cc9bb00c04efd91964f11a49
 vendor/lib64/libgdtap.so|ad5583ba837678f78c84a7ff64a4fae5a3b1097d
 vendor/lib64/libgnsspps.so|0522543abb745e616e495613b171cb4e65e97321
+vendor/lib64/libgps.utils.so|aebfe086179ebd5e9623ab0a01cbbf77da83cb5c
 vendor/lib64/libizat_client_api.so|67611af03e4622aa4ab8f00aca4c44678972016e
 vendor/lib64/libizat_core.so|3b197e431d6b311ec949ba8d2b565aaf45253d26
 vendor/lib64/liblbs_core.so|41b578c7fb1fd1e18c2eb64aebf6119182e9311a
